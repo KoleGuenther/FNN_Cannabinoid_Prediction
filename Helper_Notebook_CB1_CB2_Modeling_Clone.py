@@ -350,6 +350,11 @@ print("Top coefficient values:", coef[important_idx])
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC ### 5a) Prepare Classification Target + Feature Matrices
+
+# COMMAND ----------
+
 # DBTITLE 1,Cleanup and check for NaNs
 import numpy as np
 import pandas as pd
@@ -402,6 +407,11 @@ print("Any NaN in X_all?", np.isnan(X_all).any())
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC ### 5b) Train + Evaluate Logistic Regression (MLflow)
+
+# COMMAND ----------
+
 # DBTITLE 1,Run the Classification Models
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, matthews_corrcoef, roc_auc_score
 from sklearn.linear_model import LogisticRegression
@@ -447,6 +457,8 @@ mlflow.set_registry_uri("databricks-uc")
 
 # Setup MLFlow experiment
 mlflow.set_experiment("/Users/kole.guenther@uhsp.edu/CB1_CB2_Modeling")
+
+target_label = TARGET
 
 with mlflow.start_run(run_name=f"LogisticRegression_{feature_set}_{target_label}"):
     logreg.fit(X_train, y_train)
@@ -512,6 +524,7 @@ with mlflow.start_run(run_name=f"LogisticRegression_{feature_set}_{target_label}
 
 # MAGIC %md
 # MAGIC ## 6) XGBoost Regressor and Classifier
+# MAGIC Install dependency in a dedicated Databricks code cell, then restart Python once.
 
 # COMMAND ----------
 
